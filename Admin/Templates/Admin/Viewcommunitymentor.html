@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Community Mentor Details </h3>
+        <table border="2" align="center">
+            <tr>
+                <td>sino</td>
+                <td>Community Name</td>
+                <td>date of create</td>
+                <td>Action</td>
+            </tr>
+            {% for i in mentor %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.mentor.mentor_name}}</td>
+               
+            </tr>
+            {% endfor %}
+        </table>
+
+</body>
+</html>

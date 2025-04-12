@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Mentor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141925;
+            --bg-tertiary: #1e2433;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a7b8;
+            --accent-primary: #00f0ff;
+            --accent-secondary: #7928ca;
+            --glow-primary: rgba(0, 240, 255, 0.5);
+            --transition-speed: 0.3s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin: 50px 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        .box {
+            width: 200px;
+            height: 200px;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-primary);
+        }
+        .box img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+        }
+        .box span {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome Mentor</h1>
+    <div class="container">
+        <!-- My Profile Box -->
+        <a href="{% url 'Mentor:myprofile' %}" class="box">
+            <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Profile Icon">
+            <span>My Profile</span>
+        </a>
+
+        <!-- View Community Box -->
+        <a href="{% url 'User:communityView' %}" class="box">
+            <img src="https://cdn-icons-png.flaticon.com/512/1044/1044995.png" alt="Community Icon">
+            <span>View Community</span>
+        </a>
+    </div>
+</body>
+</html>

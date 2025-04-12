@@ -1,0 +1,41 @@
+<html>
+    <body>
+        <form method="POST">
+            {% csrf_token %}
+            <table border="2" align="center">
+                <tr>
+                    <td colspan="2">
+                    feedback
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       content <textarea name="txt_content" id="" cols="30" rows="10" value="">{{td.fb_content}}</textarea>
+                    </td>
+                    <tr>
+                        <td colspan ="2" align="center" ><input type="submit" name="btn_submit" value="submit"></td>
+                    </tr>
+            </table>
+            <br>
+            <br>
+            <br>
+
+            <table border="4" align="center">
+                <tr>
+                    <td>sino.</td>
+                    <td>Content</td>
+                    <td>delete</td>
+                    <td>edit</td>
+                </tr>
+                {% for i in feed %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.fb_content}}</td>
+                    <td><a href="{% url 'User:dlt_feedback' i.id %}">delete</a></td>
+                    <td><a href="{% url 'User:edt_feedback' i.id %}">edit</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </body>
+</html>

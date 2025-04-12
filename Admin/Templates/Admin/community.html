@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPTAIN A3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141925;
+            --bg-tertiary: #1e2433;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a7b8;
+            --accent-primary: #00f0ff;
+            --accent-secondary: #7928ca;
+            --glow-primary: rgba(0, 240, 255, 0.5);
+            --transition-speed: 0.3s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--accent-primary);
+            text-decoration: underline;
+        }
+        table {
+            width: 80%;
+            margin: 30px auto;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            color: var(--text-secondary);
+        }
+        th {
+            background-color: var(--bg-tertiary);
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: var(--bg-tertiary);
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            transition: all var(--transition-speed) ease;
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--glow-primary);
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            box-shadow: 0 0 15px var(--glow-primary);
+        }
+        input[type="submit"]:hover {
+            box-shadow: 0 0 25px var(--glow-primary);
+            transform: translateY(-2px);
+        }
+        a {
+            text-decoration: none;
+            color: var(--accent-primary);
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+        }
+        a:hover {
+            color: var(--accent-secondary);
+            text-decoration: underline;
+        }
+        .action-button {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--accent-primary);
+            background-color: transparent;
+            color: var(--accent-primary);
+        }
+        .action-button:hover {
+            background-color: var(--accent-primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 10px var(--glow-primary);
+        }
+        .back-button-container {
+            text-align: center; 
+            margin-top: 30px; 
+        }
+        .back-button {
+            display: inline-block;
+            margin: 30px auto;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            box-shadow: 0 0 15px var(--glow-primary);
+            text-align: center;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            box-shadow: 0 0 25px var(--glow-primary);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <h2 align="center">COMMUNITY NAMES</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1" align="center">
+            <tr>
+                <th>Name</th>
+                <td>
+                    <input type="text" name="txt_community" value="{{c_data.community_name}}">
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>
+                    <textarea name="txt_discription" id="" cols="30" rows="10">{{c_data.community_discription}}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input type="submit" value="Submit" name="btn_submit">
+                </td>
+            </tr>
+        </table>
+
+        <br><br><br>
+
+        <table border="3" align="center">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.community_name}}</td>
+                    <td width="200">{{i.community_discription}}</td>
+                    <td>
+                        <button class="action-button">
+                            <a href="{% url 'admin:dlt_community' i.id %}">Delete</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="action-button">
+                            <a href="{% url 'admin:edt_community' i.id %}">Edit</a>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <div class="back-button-container">
+        <a href="{% url 'admin:adminPannel' %}" class="back-button">Back</a>
+    </div>
+</body>
+</html>

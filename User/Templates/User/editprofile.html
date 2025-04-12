@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141925;
+            --bg-tertiary: #1e2433;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a7b8;
+            --accent-primary: #00f0ff;
+            --accent-secondary: #7928ca;
+            --glow-primary: rgba(0, 240, 255, 0.5);
+            --transition-speed: 0.3s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        table {
+            width: 60%;
+            margin: 50px auto;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-collapse: collapse;
+        }
+        td {
+            padding: 15px;
+            color: var(--text-secondary);
+        }
+        td:first-child {
+            font-weight: 600;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            transition: all var(--transition-speed) ease;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--glow-primary);
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            box-shadow: 0 0 15px var(--glow-primary);
+        }
+        input[type="submit"]:hover {
+            box-shadow: 0 0 25px var(--glow-primary);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body align="center">
+    <form method="POST">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Name</td>
+                <td>
+                    <input type="text" name="txt_user_name" placeholder="Name" value="{{editData.user_name}}"
+                        title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter"
+                        pattern="^[A-Z]+[a-zA-Z ]*$" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>
+                    <input type="text" name="txt_user_email" placeholder="Email" value="{{editData.user_email}}"
+                        title="Enter valid email format" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>
+                    <input type="text" name="txt_user_contact" placeholder="Contact" value="{{editData.user_contact}}"
+                        pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaining 9 digits with 0-9" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <input type="text" name="txt_user_address" placeholder="Address" value="{{editData.user_address}}"
+                        required>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="txt_btn" value="Submit">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

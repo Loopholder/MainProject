@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141925;
+            --bg-tertiary: #1e2433;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a7b8;
+            --accent-primary: #00f0ff;
+            --accent-secondary: #7928ca;
+            --glow-primary: rgba(0, 240, 255, 0.5);
+            --transition-speed: 0.3s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 50px;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+        form {
+            width: 90%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            margin: 0 auto;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            color: var(--text-secondary);
+        }
+        th {
+            background-color: var(--bg-tertiary);
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: var(--bg-tertiary);
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+            border-radius: 5px;
+            transition: transform var(--transition-speed) ease;
+        }
+        img:hover {
+            transform: scale(1.1);
+        }
+        /* Back Button Styling */
+        .back-button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            box-shadow: 0 0 15px var(--glow-primary);
+            text-align: center;
+            text-decoration: none;
+            max-width: 200px;
+        }
+        .back-button:hover {
+            box-shadow: 0 0 25px var(--glow-primary);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <h1>User List</h1>
+    <form method="post" align="center">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Photo</th>
+                    <th>Contact</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.user_name}}</td>
+                    <td>{{i.user_email}}</td>
+                    <td>{{i.user_address}}</td>
+                    <td><img src="{{i.user_photo.url}}" alt="User Photo" width="100"></td>
+                    <td>{{i.user_contact}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Back to Admin Panel Button -->
+        <div class="back-button-container">
+            <a href="{% url 'admin:adminPannel' %}" class="back-button">Back</a>
+        </div>
+    </form>
+</body>
+</html>

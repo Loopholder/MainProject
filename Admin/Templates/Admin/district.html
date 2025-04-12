@@ -1,0 +1,44 @@
+<html>
+    <body>
+        <form method="POST">
+            {% csrf_token %}
+            <table border ="1">
+                <tr>
+                    <td>District</td>
+                    <td><input type="text" name= "txt_district" value ="{{edit_var.district_name}}"></td>
+
+                </tr>
+                <tr>
+                    <td colspan ="2" align="center" ><input type="submit" name="btn_submit" value="submit"></td>
+                </tr>
+            </table>
+
+            <table border="2">
+                <tr>
+                    <td>
+                        #
+                    </td>
+                    <td>
+                        district
+                    </td>
+                    <td>
+                        action
+                      </td>
+                </tr>
+                {% for i in a %}
+                <tr>
+                    <td>
+                        {{forloop.counter}}
+                    </td>
+                    <td>
+                        {{i.district_name}}
+                    </td>
+                    <td><a href="{% url 'admin:delete_district' i.id %}">delete</a></td>
+                    <td><a href="{% url 'admin:edit_district' i.id %}">edit</a></td>
+                </tr>
+              
+                {% endfor %}
+            </table>
+        </form>
+    </body>
+</html>

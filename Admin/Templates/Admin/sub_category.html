@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+   
+        <form method="POST">
+            {% csrf_token %}
+            <Table border="1">
+                <tr>
+                    <td>category</td>
+                    <td>
+                        <select name="sel_category" id="sel_category">
+                            <option value="">--select category--</option>
+                            {% for i in cate %}
+                            <option value="{{i.id}}">{{i.category_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        sub_category
+                    </td>
+                    <td>
+                        <input type="text" name="txt_sub_category" value="{{editvar.subcategory_name}}" >
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan ="2" align="center" ><input type="submit" name="btn_submit" value="submit"></td>
+                </tr>
+            </Table>
+            <table border="2">
+                <tr>
+                    <th>Sl.No</th>
+                    <th>category</th>
+                    <th>sub_category</th>
+                    <th>Action</th>
+                   
+                </tr>
+                {% for i in sub_category %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.category.category_name}}</td>
+                    <td>{{i.subcategory_name}}</td>
+                    <td>
+                        <a href="{% url 'admin:delete_subcat' i.id %}">Delete</a>
+                        <a href="{% url 'admin:edit_subcat' i.id %}">edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+        </form>
+
+</body>
+</html>

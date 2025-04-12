@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141925;
+            --bg-tertiary: #1e2433;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a7b8;
+            --accent-primary: #00f0ff;
+            --accent-secondary: #7928ca;
+            --glow-primary: rgba(0, 240, 255, 0.5);
+            --transition-speed: 0.3s;
+
+            /* Light Mode Variables */
+            --light-bg-primary: #ffffff;
+            --light-bg-secondary: #f4f4f4;
+            --light-text-primary: #000000;
+            --light-text-secondary: #444444;
+            --light-accent-primary: #007bff;
+            --light-accent-secondary: #ff6f61;
+            --light-glow-primary: rgba(0, 0, 0, 0.2); /* Black glow for light mode */
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Header Styling */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+        .header.light-mode {
+            background-color: var(--light-bg-primary);
+            color: var(--light-text-primary);
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+        .header.light-mode h1 {
+            color: var(--light-text-primary);
+        }
+
+        /* Toggle Switch Styling */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 30px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--accent-primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        /* Admin Cards */
+        .admin-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 100px 50px 50px; /* Adjusted for header */
+        }
+        .admin-card {
+            width: calc(50% - 20px); /* Two cards per row */
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 20px;
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .admin-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 0 10px var(--glow-primary), 0 0 20px var(--glow-primary), 0 0 30px var(--glow-primary);
+            opacity: 0;
+            transition: opacity var(--transition-speed);
+            z-index: -1;
+        }
+        .admin-card:hover::after {
+            opacity: 1;
+        }
+        .admin-card .icon {
+            font-size: 3rem;
+            color: var(--accent-primary);
+            margin-bottom: 15px;
+        }
+        .admin-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .admin-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        .admin-card a {
+            text-decoration: none;
+            color: var(--accent-primary);
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+        }
+        .admin-card a:hover {
+            color: var(--accent-secondary);
+        }
+        @media (max-width: 768px) {
+            .admin-card {
+                width: 100%; /* One card per row on smaller screens */
+            }
+        }
+
+        /* Light Mode Styles */
+        body.light-mode {
+            background-color: var(--light-bg-primary);
+            color: var(--light-text-primary);
+        }
+        body.light-mode .admin-card {
+            background-color: var(--light-bg-secondary);
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Black border in light mode */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        body.light-mode .admin-card::after {
+            box-shadow: 0 0 10px var(--light-glow-primary), 0 0 20px var(--light-glow-primary), 0 0 30px var(--light-glow-primary);
+        }
+        body.light-mode .admin-card .icon {
+            color: var(--light-accent-primary);
+        }
+        body.light-mode .admin-card h3 {
+            color: var(--light-text-primary);
+        }
+        body.light-mode .admin-card p {
+            color: var(--light-text-secondary);
+        }
+        body.light-mode .admin-card a {
+            color: var(--light-accent-primary);
+        }
+        body.light-mode .admin-card a:hover {
+            color: var(--light-accent-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <h1>Admin Dashboard</h1>
+        <label class="toggle-switch">
+            <input type="checkbox" id="modeToggle">
+            <span class="slider"></span>
+        </label>
+    </header>
+
+    <div class="admin-container">
+        <!-- Complaint View -->
+        <div class="admin-card">
+            <i class="fa-solid fa-exclamation-circle icon"></i>
+            <h3>Complaint View</h3>
+            <p>View and manage complaints submitted by users.</p>
+            <a href="{% url 'admin:complaint_view' %}">Go to Complaints</a>
+        </div>
+
+        <!-- Community -->
+        <div class="admin-card">
+            <i class="fa-solid fa-users icon"></i>
+            <h3>Community</h3>
+            <p>Manage community posts and discussions.</p>
+            <a href="{% url 'admin:community' %}">Go to Community</a>
+        </div>
+
+        <!-- Feedback -->
+        <div class="admin-card">
+            <i class="fa-solid fa-comment-dots icon"></i>
+            <h3>Feedback</h3>
+            <p>View feedback from users about the platform.</p>
+            <a href="{% url 'admin:viewfeedback' %}">Go to Feedback</a>
+        </div>
+
+        <!-- User View -->
+        <div class="admin-card">
+            <i class="fa-solid fa-user icon"></i>
+            <h3>User View</h3>
+            <p>View and manage user profiles.</p>
+            <a href="{% url 'Guest:userview' %}">Go to Users</a>
+        </div>
+
+        <!-- Mentor View -->
+        <div class="admin-card">
+            <i class="fa-solid fa-chalkboard-user icon"></i>
+            <h3>Mentor View</h3>
+            <p>View and manage mentor profiles.</p>
+            <a href="{% url 'admin:mentorView' %}">Go to Mentors</a>
+        </div>
+
+        <!-- View Community -->
+        <div class="admin-card">
+            <i class="fa-solid fa-chart-line icon"></i>
+            <h3>View Community</h3>
+            <p>View detailed community statistics.</p>
+            <a href="{% url 'admin:v_community' %}">Go to Community Stats</a>
+        </div>
+    </div>
+
+    <script>
+        // Dark/Light Mode Toggle Logic
+        const modeToggle = document.getElementById('modeToggle');
+        const body = document.body;
+        const header = document.getElementById('header');
+
+        modeToggle.addEventListener('change', () => {
+            body.classList.toggle('light-mode');
+            header.classList.toggle('light-mode');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141925;
+            --bg-tertiary: #1e2433;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a7b8;
+            --text-tertiary: #6b7280;
+            --accent-primary: #00f0ff;
+            --accent-secondary: #7928ca;
+            --accent-tertiary: #ff0080;
+            --glow-primary: rgba(0, 240, 255, 0.5);
+            --transition-speed: 0.3s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        table {
+            width: 60%;
+            margin: 50px auto;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        td {
+            padding: 15px;
+            color: var(--text-secondary);
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--accent-primary);
+            border-radius: 5px;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            transition: all var(--transition-speed) ease;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 10px var(--glow-primary);
+        }
+        input[type="submit"] {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            box-shadow: 0 0 15px var(--glow-primary);
+        }
+        input[type="submit"]:hover {
+            box-shadow: 0 0 25px var(--glow-primary);
+            transform: translateY(-2px);
+        }
+        a {
+            text-decoration: none;
+            color: var(--accent-primary);
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+        }
+        a:hover {
+            color: var(--accent-tertiary);
+        }
+    </style>
+</head>
+<body align="center">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <td>Name</td>
+                <td>
+                    <input type="text" name="txt_user_name" placeholder="name" autocomplete="off" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" required>
+                </td>
+            </tr>
+            <tr>
+                <td>E-mail</td>
+                <td>
+                    <input type="text" name="txt_user_email" autocomplete="off" title="Enter valid email format" placeholder="email" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>
+                    <input type="password" name="txt_user_password" autocomplete="off" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>
+                    <input type="text" name="txt_user_address" autocomplete="off" placeholder="address" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td>
+                    <input type="file" name="txt_user_photo" autocomplete="off" placeholder="photo" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Proof</td>
+                <td>
+                    <input type="file" name="txt_user_proof" autocomplete="off" placeholder="photo" required>
+                </td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>
+                    <input type="text" name="txt_user_contact" autocomplete="off" placeholder="contact" pattern="[1-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaining 9 digits with 0-9" required>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="btn_submit" value="Submit"  class="cta-button primary">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <a href="{% url 'Guest:login' %}">LOGIN</a>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#sel_place").html(data);
+            },
+        });
+    });
+</script>

@@ -1,0 +1,17 @@
+<html>
+    <body align="center">
+        <form method="POST">
+            {% csrf_token %}
+            <table border ="1" align="center">
+                <tr>
+                    <td>Replay:</td>
+                    <td><textarea name="txt_replay" id="" cols="30" rows="10"></textarea></td>
+
+                </tr>
+                <tr>
+                    <td colspan ="2" align="center" ><input type="submit" value="submit" name ="btn_submit"></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
