@@ -1,0 +1,184 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="POST">
+        <table border="2" align="center">
+            <tr>
+                <th>S.No</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date of Creation</th>
+                <th>Mentor</th>
+                <th>Action</th>
+            </tr>
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.community.community_name}}</td>
+                <td>{{i.community.community_discription}}</td>
+                <td>{{i.community.community_Date}}</td>
+                <td>{{i.mentor.mentor_name}}</td>
+                <td>
+                    <button class="action-button">
+                        <a href="{% url 'admin:editmentor' i.id %}">Edit</a>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assigned Mentors - Card View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a0e17;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: #141925;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 240, 255, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #00f0ff;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #a0a7b8;
+            margin-bottom: 10px;
+        }
+
+        .mentor-tags {
+            margin-top: 10px;
+        }
+
+        .mentor-tag {
+            display: inline-block;
+            background-color: #00f0ff;
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px 5px 0 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .action-button {
+            display: inline-block;
+            margin-top: 15px;
+            background: linear-gradient(to right, #00f0ff, #7928ca);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .action-button:hover {
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+        }
+
+        em {
+            color: #888;
+        }
+        .back-button-container {
+            text-align: center; 
+            margin-top: 30px;
+        }
+        .back-button {
+            margin: 30px auto;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            box-shadow: 0 0 15px var(--glow-primary);
+            text-align: center;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            box-shadow: 0 0 25px var(--glow-primary);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<h2>Communities & Assigned Mentors</h2>
+
+<div class="card-container">
+    {% for item in community_data %}
+    <div class="card">
+        <h3>{{ item.community_name }}</h3>
+        <p>{{ item.community_discription }}</p>
+        <p><strong>Date Created:</strong> {{ item.community_Date }}</p>
+
+        <div class="mentor-tags">
+            {% if item.tbl_community_mentor_set.all %}
+                {% for mentor in item.tbl_community_mentor_set.all %}
+                <a href="{% url 'admin:editmentor' mentor.id %}">
+                    <span class="mentor-tag">{{ mentor.mentor.mentor_name }}</span>
+                </a>
+                {% endfor %}
+            {% else %}
+                <em>No mentors assigned</em>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="back-button-container">
+    <a href="{% url 'admin:adminPannel' %}" class="back-button" align="center">Back</a>
+</div>
+
+</body>
+</html>

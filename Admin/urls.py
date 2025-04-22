@@ -20,6 +20,7 @@ urlpatterns = [
     path('dlt_mentor/<int:did>',views.dlt_mentor,name='dlt_mentor'),
     path('viewcommunity/',views.viewcommunity,name='v_community'),
     path('addmentor/<int:id>',views.addmentor,name='addmentor'),
+    path('Viewassignedmentor',views.Viewassignedmentor,name="Viewassignedmentor"),
     path('editmentor/<int:id>',views.editmentor,name='editmentor'),
     path('viewfeedback/',views.feedback, name="viewfeedback"),
     path('adminPannel/',views.adminPannel,name='adminPannel'),

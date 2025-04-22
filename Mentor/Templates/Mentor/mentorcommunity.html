@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <div >
+            {% for i in data %}
+            <div>
+                <div>No. {{ forloop.counter }}</div>
+                <h2>{{ i.community_name }}</h2>
+                <p>{{ i.community_discription }}</p>
+                <div>Created: {{ i.community_Date }}</div> <br>
+                <a href="{% url 'User:communitychatpage'  i.id %}">HOPE IN</a>
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+</body>
+</html>

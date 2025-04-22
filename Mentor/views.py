@@ -1,5 +1,6 @@
 from django.shortcuts import render ,redirect
 from Admin.models import *
+from Guest.models import *
 
 
 def homepage(request):
@@ -39,3 +40,9 @@ def changePassword(request):
     else:
         return render (request,'Mentor/changepassword.html')
 
+
+# def mentorcommunity(request):
+#     data=tbl_mentor.objects.get(id=request.session['mid'])
+#     dataCommunity=tbl_community_mentor.objects.all()
+#     if request.method=="POST":
+#         dataCommunity.filter()

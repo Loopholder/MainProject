@@ -149,16 +149,56 @@ def viewcommunity(request):
 
 #add mentor
 
-def addmentor(request,id):
-    data=tbl_community_mentor.objects.all()
-    mentor=tbl_mentor.objects.all()
-    community=tbl_community.objects.get(id=id)
-    if request.method=="POST":
-        mentor=tbl_mentor.objects.get(id=request.POST.get('sel_mentor'))
-        tbl_community_mentor.objects.create(mentor=mentor,community=community)
-        return redirect("admin:v_community")
-    else:
-        return render(request,'admin/addmentor.html',{'mentor':mentor,'data':data})
+# def addmentor(request,id):
+#     mentor=tbl_mentor.objects.all()
+#     community=tbl_community.objects.get(id=id)
+#     if request.method=="POST":
+#         mentor=tbl_mentor.objects.get(id=request.POST.get('sel_mentor'))
+#         tbl_community_mentor.objects.create(mentor=mentor,community=community)
+#         return render(request,'admin/addmentor.html',{'msg':'Mentor Assigned'})
+#     else:
+#         return render(request,'admin/addmentor.html',{'mentor':mentor})
+    
+def addmentor(request, id):
+    mentor_list = tbl_mentor.objects.all()
+    community = tbl_community.objects.get(id=id)
+
+    if request.method == "POST":
+        mentor_id = request.POST.get('sel_mentor')
+        selected_mentor = tbl_mentor.objects.get(id=mentor_id)
+
+        # Check for existing assignment
+        already_assigned = tbl_community_mentor.objects.filter(
+            mentor=selected_mentor,
+            community=community
+        ).exists()
+
+        if already_assigned:
+            msg = "This mentor is already assigned to this community!"
+        else:
+            tbl_community_mentor.objects.create(mentor=selected_mentor, community=community)
+            msg = "Mentor Assigned"
+
+        return render(request, 'admin/addmentor.html', {
+            'mentor': mentor_list,
+            'community': community,
+            'msg': msg
+        })
+
+    return render(request, 'admin/addmentor.html', {
+        'mentor': mentor_list,
+        'community': community
+    })
+
+
+def Viewassignedmentor(request):
+    from django.db.models import Prefetch
+
+    communities = tbl_community.objects.all()
+    return render(request, 'admin/Viewassignedmentors.html', {'community_data': communities})
+
+
+
 def editmentor(request,id): 
     mentor=tbl_mentor.objects.all()
     men=tbl_community_mentor.objects.get(id=id)

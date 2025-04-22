@@ -7,5 +7,6 @@ urlpatterns = [
     path('myprofile/',views.myprofile,name="myprofile"),
     path('changePassword/',views.changePassword,name="changePassword"),
     path('editprofile/',views.editprofile,name="editprofile"),
+    # path('mentorcommunity',views.mentorcommunity,name='mentorcommunity'),
    
 ]
