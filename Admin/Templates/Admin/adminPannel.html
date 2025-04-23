@@ -239,6 +239,13 @@
             <p>View and manage complaints submitted by users.</p>
             <a href="{% url 'admin:complaint_view' %}">Go to Complaints</a>
         </div>
+        <!-- Feedback View -->
+        <div class="admin-card">
+            <i class="fa-solid fa-comments icon"></i>
+            <h3>User Feedbacks</h3>
+            <p>Review, edit, and delete feedback submitted by users.</p>
+            <a href="{% url 'admin:view_feedback' %}">Go to Feedbacks</a>
+        </div>
 
         <!-- Community -->
         <div class="admin-card">
@@ -246,14 +253,6 @@
             <h3>Community</h3>
             <p>Manage community posts and discussions.</p>
             <a href="{% url 'admin:community' %}">Go to Community</a>
-        </div>
-
-        <!-- Feedback -->
-        <div class="admin-card">
-            <i class="fa-solid fa-comment-dots icon"></i>
-            <h3>Feedback</h3>
-            <p>View feedback from users about the platform.</p>
-            <a href="{% url 'admin:viewfeedback' %}">Go to Feedback</a>
         </div>
 
         <!-- User View -->

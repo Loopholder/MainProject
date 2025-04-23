@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="margin-top: 40px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+        <h2 style="margin: 0;">My Contacts</h2>
+        <button id="showSearchUserModal" type="button" style="background: none; border: none; cursor: pointer; padding: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" height="1.6em" viewBox="0 0 512 512" style="vertical-align: middle; fill: #333;">
+                <path d="M505 442.7L405.3 343c28.4-34.9 45.5-79 45.5-127.3C450.8 96.5 354.3 0 225.4 0S0 96.5 0 215.7s96.5 215.7 215.7 215.7c48.4 0 92.5-17.1 127.3-45.5l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 0-34zM215.7 370.6c-85.6 0-155-69.4-155-155s69.4-155 155-155 155 69.4 155 155-69.4 155-155 155z"/></svg>
+        </button>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showModalBtn = document.getElementById('showSearchUserModal');
+            const modal = document.getElementById('searchUserModal');
+            const closeModalBtn = document.getElementById('closeSearchUserModal');
+            const searchForm = document.getElementById('searchUserForm');
+            const resultModal = document.getElementById('searchUserResultModal');
+            const closeResultBtn = document.getElementById('closeSearchUserResultModal');
+            const resultContent = document.getElementById('searchUserResultContent');
+            const searchBtn = document.getElementById('searchUserBtn');
+
+            showModalBtn.onclick = function() {
+                modal.style.display = 'flex';
+            };
+            closeModalBtn.onclick = function() {
+                modal.style.display = 'none';
+            };
+            modal.onclick = function(e) {
+                if(e.target === modal) modal.style.display = 'none';
+            };
+            closeResultBtn.onclick = function() {
+                resultModal.style.display = 'none';
+                resultContent.innerHTML = '';
+            };
+            resultModal.onclick = function(e) {
+                if(e.target === resultModal) {
+                    resultModal.style.display = 'none';
+                    resultContent.innerHTML = '';
+                }
+            };
+            searchForm.onsubmit = function() {
+                const username = document.getElementById('searchUserInput').value;
+                if(!username) return false;
+                fetch('{% url "User:ajax_search_user" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: 'username=' + encodeURIComponent(username)
+                })
+                .then(resp => resp.text())
+                .then(html => {
+                    resultContent.innerHTML = html;
+                    modal.style.display = 'none';
+                    resultModal.style.display = 'flex';
+                });
+                return false;
+            };
+        });
+        // Robust event delegation for Request button in search result modal
+        document.addEventListener('click', function(e) {
+            if(e.target && e.target.id === 'sendRequestBtn') {
+                var btn = e.target;
+                var userId = btn.getAttribute('data-userid');
+                btn.disabled = true;
+                var csrftoken = document.querySelector('#sendRequestForm [name=csrfmiddlewaretoken]')?.value || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+                fetch('{% url "User:send_friend_request" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: 'to_user_id=' + encodeURIComponent(userId)
+                })
+                .then(resp => resp.json())
+                .then(data => {
+                    var msgDiv = document.getElementById('requestMsg');
+                    if(msgDiv) msgDiv.innerText = data.msg;
+                    if(data.success) {
+                        btn.innerText = 'Requested';
+                        btn.style.background = '#aaa';
+                    } else {
+                        btn.disabled = false;
+                        if(msgDiv) msgDiv.style.color = '#b00';
+                    }
+                })
+                .catch(function() {
+                    var msgDiv = document.getElementById('requestMsg');
+                    if(msgDiv) {
+                        msgDiv.innerText = 'Network error. Try again.';
+                        msgDiv.style.color = '#b00';
+                    }
+                    btn.disabled = false;
+                });
+            }
+        });
+        </script>
+        <!-- Search User Modal -->
+        <div id="searchUserModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); z-index:3000; align-items:center; justify-content:center;">
+            <div style="background:#fff; border-radius:12px; max-width:350px; width:90%; margin:80px auto 0; padding:24px 16px; box-shadow:0 8px 32px rgba(0,0,0,0.25); position:relative;">
+                <button id="closeSearchUserModal" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:1.4em; cursor:pointer;">&times;</button>
+                <h3 style="margin-top:0;">Search User</h3>
+                <form id="searchUserForm" onsubmit="return false;">
+                    {% csrf_token %}
+                    <input type="text" id="searchUserInput" placeholder="Enter username..." style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #ccc; margin-top:12px; font-size:1em;">
+                    <button id="searchUserBtn" style="width:100%;margin-top:14px;padding:8px 0;background:linear-gradient(90deg,#6a11cb,#2575fc);color:#fff;border:none;border-radius:6px;font-weight:600;cursor:pointer;">Search</button>
+                </form>
+            </div>
+        </div>
+        <!-- Search User Result Modal -->
+        <div id="searchUserResultModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); z-index:4000; align-items:center; justify-content:center;">
+            <div style="background:#fff; border-radius:12px; max-width:350px; width:90%; margin:80px auto 0; padding:24px 16px; box-shadow:0 8px 32px rgba(0,0,0,0.25); position:relative;">
+                <button id="closeSearchUserResultModal" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:1.4em; cursor:pointer;">&times;</button>
+                <div id="searchUserResultContent"></div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered" style="width: 100%; max-width: 500px; margin: 0 auto; border-radius: 12px; overflow: hidden;">
+        <thead style="background: #222; color: #fff;">
+            <tr>
+                <th style="padding: 12px;">S.No.</th>
+                <th style="padding: 12px;">Username</th>
+                <th style="padding: 12px;">Chat</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if contacts and contacts|length > 0 %}
+                {% for c in contacts %}
+                <tr>
+                    <td style="padding: 10px;">{{ forloop.counter }}</td>
+                    <td style="padding: 10px;">{{ c.user_name }}</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <a href="{% url 'User:dmchatpage' c.id %}" title="Chat" style="color: #f3f5f6; font-size: 1.5em;">
+                            <i class="fa-solid fa-comments"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 20px; color: #888;">You have no contacts yet. When you connect with other users, they will appear here.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    {% if accepted_users and accepted_users|length > 0 %}
+    <h3 style="margin-top:32px;">Users Who Accepted My Request</h3>
+    <table class="table table-bordered" style="width: 100%; max-width: 500px; margin: 0 auto; border-radius: 12px; overflow: hidden;">
+        <thead style="background: #333; color: #fff;">
+            <tr>
+                <th style="padding: 12px;">S.No.</th>
+                <th style="padding: 12px;">Username</th>
+                <th style="padding: 12px;">Chat</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in accepted_users %}
+            <tr>
+                <td style="padding: 10px;">{{ forloop.counter }}</td>
+                <td style="padding: 10px;">{{ u.user_name }}</td>
+                <td style="padding: 10px; text-align: center;">
+                    <a href="{% url 'User:dmchatpage' u.id %}" title="Chat" style="color: #0a0a0a; font-size: 1.5em;">
+                        <i class="fa-solid fa-comments" style="color: white;"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showModalBtn = document.getElementById('showSearchUserModal');
+        const searchModal = document.getElementById('searchUserModal');
+        const closeModalBtn = document.getElementById('closeSearchUserModal');
+        const searchInput = document.getElementById('searchUserInput');
+        const searchBtn = document.getElementById('searchUserBtn');
+        const resultModal = document.getElementById('searchUserResultModal');
+        const closeResultBtn = document.getElementById('closeSearchUserResultModal');
+        const resultContent = document.getElementById('searchUserResultContent');
+
+        if(showModalBtn && searchModal && closeModalBtn) {
+            showModalBtn.addEventListener('click', function() {
+                searchModal.style.display = 'flex';
+            });
+            closeModalBtn.addEventListener('click', function() {
+                searchModal.style.display = 'none';
+            });
+            searchModal.addEventListener('click', function(e) {
+                if(e.target === searchModal) searchModal.style.display = 'none';
+            });
+        }
+        // AJAX search logic
+        function showResultModal(html) {
+            resultContent.innerHTML = html;
+            resultModal.style.display = 'flex';
+        }
+        function hideResultModal() {
+            resultModal.style.display = 'none';
+        }
+        if(searchBtn && searchInput) {
+            function triggerSearch() {
+                var username = searchInput.value.trim();
+                if(!username) return;
+                fetch("{% url 'User:ajax_search_user' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: "username=" + encodeURIComponent(username)
+                })
+                .then(response => response.text())
+                .then(html => {
+                    showResultModal(html);
+                });
+            }
+            searchBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                triggerSearch();
+            });
+            searchInput.addEventListener('keydown', function(e) {
+                if(e.key === 'Enter') {
+                    e.preventDefault();
+                    triggerSearch();
+                }
+            });
+        }
+        if(closeResultBtn && resultModal) {
+            closeResultBtn.addEventListener('click', function() {
+                hideResultModal();
+            });
+            resultModal.addEventListener('click', function(e) {
+                if(e.target === resultModal) hideResultModal();
+            });
+        }
+    });
+</script>
+{% endblock %}

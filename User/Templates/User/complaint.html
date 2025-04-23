@@ -1,49 +1,152 @@
-<html>
-    <body>
-        <form method="POST">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Complaint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141925;
+            --bg-tertiary: #1e2433;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a7b8;
+            --accent-primary: #00f0ff;
+            --accent-secondary: #7928ca;
+            --transition-speed: 0.3s;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            font-size: 2.4rem;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .complaint-form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+        .complaint-table {
+            width: 420px;
+            background: var(--bg-secondary);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin: 0 auto;
+            padding: 32px 36px 24px 36px;
+        }
+        .complaint-table td {
+            padding: 18px 0 12px 0;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            border: none;
+        }
+        .complaint-table input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--accent-primary);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-top: 6px;
+            outline: none;
+            transition: border-color var(--transition-speed) ease;
+        }
+        .complaint-table input[type="text"]:focus {
+            border-color: var(--accent-secondary);
+        }
+        .cta-button {
+            padding: 12px 38px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border: none;
+            outline: none;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-primary);
+            display: inline-block;
+        }
+        .cta-button:hover {
+            background: linear-gradient(to right, var(--accent-secondary), var(--accent-primary));
+            transform: translateY(-2px);
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 32px;
+            text-decoration: none;
+            color: var(--accent-primary);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color var(--transition-speed) ease;
+        }
+        .back-link:hover {
+            color: var(--accent-secondary);
+        }
+        @media (max-width: 600px) {
+            .complaint-table {
+                width: 98vw;
+                padding: 14px 4vw 18px 4vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Submit a Complaint</h1>
+    <div class="complaint-form-container">
+        <form method="POST" style="width:100%;">
             {% csrf_token %}
-            <table border="1" align="center">
+            <table class="complaint-table">
                 <tr>
                     <td>
-                       title <input type="text" name="txt_user_title"  placeholder="title" required>
+                        <label for="txt_user_title">Title</label>
+                        <input type="text" id="txt_user_title" name="txt_user_title" placeholder="Title" required>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                       content <input type="text" name="txt_user_content"  placeholder="content" required>
+                        <label for="txt_user_content">Content</label>
+                        <input type="text" id="txt_user_content" name="txt_user_content" placeholder="Content" required>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan ="2" align="center" ><input type="submit" name="btn_submit" value="submit"></td>
+                    <td align="center">
+                        <input type="submit" class="cta-button" name="btn_submit" value="Submit">
+                    </td>
                 </tr>
-            </table>
-            <br>
-            <br>
-            <table border="3" align="center">
-                <tr>
-                    <td>slno.</td>
-                    <td>Title</td>
-                    <td>Content</td>
-                    <td>Replay</td>
-                    <td>Date</td>
-                    <td>Action</td>
-                </tr>
-                {% for i in complaint %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{i.complaint_title}}</td>
-                    <td>{{i.complaint_content}}</td>
-                    <td>{{i.complaint_replay}}</td>
-                    <td>{{i.complaint_date}}</td>
-                    <td>Action</td>
-                </tr>
-                {% endfor %}
             </table>
         </form>
-    </body>
+    </div>
+    <a href="{% url 'User:homepage' %}" class="back-link">Back to Home</a>
+    {% if msg %}
+    <script>
+        alert("{{msg}}")
+    </script>
+    {% endif %}
+</body>
 </html>
-<!-- {% if msg %}
-<script>
-    alert("{{msg}}")
-</script>
-{% endif %} -->

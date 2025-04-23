@@ -80,6 +80,15 @@
             box-shadow: 0 0 25px var(--glow-primary);
             transform: translateY(-2px);
         }
+        a {
+            text-decoration: none;
+            color: var(--accent-primary);
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+        }
+        a:hover {
+            color: var(--accent-tertiary);
+        }
     </style>
 </head>
 <body align="center">
@@ -104,6 +113,7 @@
             </tr>
         </table>
     </form>
+    <a href="{% url 'Guest:user_form' %}">SIGN UP</a>
     {% if msg %}
     <script>
         alert("{{msg}}");

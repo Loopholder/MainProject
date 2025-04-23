@@ -1,0 +1,36 @@
+{% load static %}
+<div style="padding: 18px 10px; max-width: 400px; margin: 0 auto;">
+    <h3 style="text-align:center;">Notifications</h3>
+    {% if error %}
+        <div style="text-align:center; color:#b00; padding:10px;">{{ error }}</div>
+    {% endif %}
+    {% if notifications %}
+        <ul style="list-style:none; padding:0; margin:0;">
+            {% for n in notifications %}
+                <li style="background:#f7f7f7; margin-bottom:12px; border-radius:8px; padding:16px 14px; box-shadow:0 2px 10px rgba(0,0,0,0.07); display:flex; align-items:center;">
+                    <img src="{{ n.from_user.user_photo.url }}" alt="Profile" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:15px;">
+                    <div style="flex:1;">
+                        <div><strong>{{ n.from_user.user_name }}</strong> sent you a friend request.</div>
+                        <div style="font-size:0.9em;color:#888;">{{ n.date|date:'Y-m-d H:i' }}</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:6px;margin-left:10px;">
+                        <form method="POST" action="{% url 'User:handle_notification' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="notification_id" value="{{ n.notification_id }}">
+                            <input type="hidden" name="action" value="accept">
+                            <button type="submit" style="background:#4caf50;color:#fff;padding:4px 10px;border:none;border-radius:6px;cursor:pointer;">Accept</button>
+                        </form>
+                        <form method="POST" action="{% url 'User:handle_notification' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="notification_id" value="{{ n.notification_id }}">
+                            <input type="hidden" name="action" value="reject">
+                            <button type="submit" style="background:#f44336;color:#fff;padding:4px 10px;border:none;border-radius:6px;cursor:pointer;">Reject</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div style="text-align:center; color:#b00; padding:30px 0;">No notifications yet.</div>
+    {% endif %}
+</div>

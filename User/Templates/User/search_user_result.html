@@ -1,0 +1,49 @@
+{% if user_found %}
+<div style="text-align:center; padding:24px;">
+    <img src="{{ user_profile.user_photo.url }}" alt="Profile" style="width:90px;height:90px;border-radius:50%;object-fit:cover;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+    <h3 style="margin:12px 0 6px 0;">{{ user_profile.user_name }}</h3>
+    {% if already_requested %}
+    <button type="button" style="padding:10px 24px;border-radius:8px;background:#aaa;color:#fff;border:none;cursor:not-allowed;font-weight:600;" disabled>Requested</button>
+    <div style="margin-top:10px;color:#333;">Request already sent.</div>
+    {% else %}
+    <form id="sendRequestForm" style="display:inline;">
+        {% csrf_token %}
+        <button id="sendRequestBtn" data-userid="{{ user_profile.id }}" type="button" style="padding:10px 24px;border-radius:8px;background:linear-gradient(90deg,#6a11cb,#2575fc);color:#fff;border:none;cursor:pointer;font-weight:600;">Request</button>
+    </form>
+    <div id="requestMsg" style="margin-top:10px;color:#333;"></div>
+    <script>
+    // This ensures the event is attached every time the modal loads via AJAX
+    setTimeout(function() {
+        var btn = document.getElementById('sendRequestBtn');
+        if(btn) {
+            btn.onclick = function() {
+                var userId = btn.getAttribute('data-userid');
+                btn.disabled = true;
+                var csrftoken = document.querySelector('#sendRequestForm [name=csrfmiddlewaretoken]')?.value || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+                fetch('{% url "User:send_friend_request" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: 'to_user_id=' + encodeURIComponent(userId)
+                })
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementById('requestMsg').innerText = data.msg;
+                    if(data.success) {
+                        btn.innerText = 'Requested';
+                        btn.style.background = '#aaa';
+                    } else {
+                        btn.disabled = false;
+                    }
+                });
+            };
+        }
+    }, 10);
+    </script>
+    {% endif %}
+</div>
+{% else %}
+<div style="text-align:center; padding:24px; color:#b00;">No user found with that username.</div>
+{% endif %}

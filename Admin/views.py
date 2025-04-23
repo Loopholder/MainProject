@@ -107,12 +107,18 @@ def complaint_replay(request,cid):
         return render(request, 'admin/replay.html')
 
 def complaint_view(request):
-    compalint=tbl_complaint.objects.all()
-    return render(request , 'admin/view_complaint.html', {'comp':compalint})
+    comp=tbl_complaint.objects.all()
+    return render(request , 'admin/view_complaint.html', {'comp':comp})
 
 
-#community 
+def dlt_complaint(request):
+    comp = tbl_complaint.objects.get(id=request.GET.get("cid"))
+    comp.delete()
+    return redirect("admin:complaint_view")
     
+    
+#community 
+
 def community_data(request):
     data=tbl_community.objects.all()
     if request.method=="POST":
@@ -218,11 +224,26 @@ def feedback(request):
 
 #admin pannel
 
+def view_feedback(request):
+    feedbacks = tbl_feedback.objects.select_related('user').all().order_by('-fb_date')
+    data = tbl_user.objects.get(id=request.session['uid'])
+    return render(request, 'Admin/view_feedback.html', {'feedbacks': feedbacks, 'data': data})
+
+def dlt_feedback(request,fid):
+    feedback = tbl_feedback.objects.get(id=request.GET.get("fid"))
+    feedback.delete()
+    return redirect("admin:view_feedback")
+
 def adminPannel(request):
     return render(request, 'admin/adminPannel.html')
 
 def mentorView(request):
     data=tbl_mentor.objects.all()
+    return render(request, 'admin/MentorView.html' ,{'data':data})
+
+def viewcommunitymentor(request,id):
+    mentor=tbl_community_mentor.objects.filter(mentor=id)
+    return render(request,'admin/viewcommunity.html',{'mentor':mentor})
     return render(request, 'admin/MentorView.html' ,{'data':data})
 
 def viewcommunitymentor(request,id):

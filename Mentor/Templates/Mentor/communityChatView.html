@@ -1,0 +1,228 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <style>
+        .par-r-mess {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-bottom: 5px;
+        }
+        
+        .par-s-mess {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 5px;
+            align-items: flex-end;
+        }
+        
+        .r-mess {
+            padding: 5px;
+            background-color: #BBDEFB;
+            border-radius: 10px;
+            max-width: 555px;
+            width: fit-content;
+        }
+        
+        .s-mess {
+            padding: 5px;
+            background-color: #90caf9;
+            border-radius: 10px;
+            max-width: 555px;
+            width: fit-content;
+        }
+        
+        .con-width {
+            min-width: 35px;
+        }
+        
+        .r-time {
+            padding: 2px;
+            font-size: 9px;
+        }
+        
+        .s-time {
+            padding: 2px;
+            font-size: 9px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .user-name {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 2px;
+            cursor: pointer;
+        }
+
+        .user-name:hover {
+            text-decoration: underline;
+        }
+
+        .profile-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        .profile-info {
+            text-align: center;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+            word-wrap: break-word;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .private-chat-btn {
+            background-color: #6c8cfc;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .private-chat-btn:hover {
+            background-color: #5a7aeb;
+        }
+    </style>
+    <body>
+        {% for i in data %}
+            {% if i.mentor_id != user.id %}
+                {% if i.chat_file != '' %}
+                    <div class="par-r-mess">
+                        <div class="user-name" onclick="showProfile(event, '{{i.user.id}}', '{{i.user.user_name}}', '{{i.user.email}}', '{{i.user.user_photo.url}}')">
+                            {{i.user.user_name}}
+                        </div>
+                        <div class="r-mess">
+                            <div class="con-width">
+                                <a href="{{i.chat_file.url}}"><img src="{{i.chat_file.url}}" width="250px" height="250px" style="border-radius: 5%;" alt=""></a>
+                            </div>
+                            <div class="r-time">
+                                {{i.chat_time|time}}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="par-r-mess">
+                        <div class="user-name" onclick="showProfile(event, '{{i.user.id}}', '{{i.user.user_name}}', '{{i.user.email}}', '{{i.user.user_photo.url}}')">
+                            {{i.user.user_name}}
+                        </div>
+                        <div class="r-mess">
+                            <div class="con-width">
+                                {{i.chat_content}}
+                            </div>
+                            <div class="r-time">
+                                {{i.chat_time|time}}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                {% if i.chat_file != '' %}
+                    <div class="par-s-mess">
+                        <div class="user-name" onclick="showProfile(event, '{{i.user.id}}', '{{i.user.user_name}}', '{{i.user.email}}', '{{i.user.user_photo.url}}')">
+                            ME
+                        </div>
+                        <div class="s-mess">
+                            <div class="con-width">
+                                <a href="{{i.chat_file.url}}"><img src="{{i.chat_file.url}}" width="250px" height="250px" style="border-radius: 5%;" alt=""></a>
+                            </div>
+                            <div class="s-time">{{i.chat_time|time}}</div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="par-s-mess">
+                        <div class="user-name" onclick="showProfile(event, '{{i.user.id}}', '{{i.user.user_name}}', '{{i.user.email}}', '{{i.user.user_photo.url}}')">
+                            ME
+                        </div>
+                        <div class="s-mess">
+                            <div class="con-width">
+                                {{i.chat_content}}
+                            </div>
+                            <div class="s-time">
+                                {{i.chat_time|time}}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        <!-- Profile Popup -->
+        <div class="profile-popup" id="profilePopup">
+            <div class="profile-header">
+                <span></span>
+                <i class="fas fa-times close-btn" ></i>
+            </div>
+            <img id="profileImage" src="" alt="Profile" class="profile-image">
+            <div class="profile-info">
+                <h3 id="profileName"></h3>
+                <p id="profileEmail"></p>
+                <button class="private-chat-btn" >Start Private Chat</button>
+            </div>
+        </div>
+    </body>
+    <script>
+        
+        function showProfile(event, userId, username, email, profileImage) {
+    event.stopPropagation(); 
+
+    document.getElementById('profileName').textContent = username;
+    document.getElementById('profileEmail').textContent = email;
+    document.getElementById('profileImage').src = profileImage;
+    document.getElementById('profilePopup').style.display = 'block';
+}
+
+// Prevent popup from closing when clicking inside it
+document.getElementById('profilePopup').addEventListener('click', function(event) {
+    event.stopPropagation();
+});
+
+// Close popup when clicking the close button
+document.querySelector('.close-btn').addEventListener('click', function() {
+    document.getElementById('profilePopup').style.display = 'none';
+});
+    </script>
+    </html>

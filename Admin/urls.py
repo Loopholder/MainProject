@@ -14,6 +14,7 @@ urlpatterns = [
     path('edit_subcategory/<int:eid>' ,views.edit_subcat,name="edit_subcat"),
     path('complaint_replay/<int:cid>',views.complaint_replay,name='complaint_replay'),
     path('view_complaints/',views.complaint_view,name='complaint_view'),
+    path('dlt_complaint/<int:cid>',views.dlt_complaint,name='dlt_complaint'),
     path('community/' , views.community_data,name='community'),
     path('edit_community_name/<int:eid>',views.edt_community, name='edt_community'),
     path('delete_community_name/<int:did>',views.dlt_community, name='dlt_community'),
@@ -23,8 +24,9 @@ urlpatterns = [
     path('Viewassignedmentor',views.Viewassignedmentor,name="Viewassignedmentor"),
     path('editmentor/<int:id>',views.editmentor,name='editmentor'),
     path('viewfeedback/',views.feedback, name="viewfeedback"),
-    path('adminPannel/',views.adminPannel,name='adminPannel'),
+    path('adminPannel/', views.adminPannel, name='adminPannel'),
+    path('view_feedback/', views.view_feedback, name='view_feedback'),
+    path('dlt_feedback/<int:did>',views.dlt_feedback,name='dlt_feedback'),
     path('mentorView/',views.mentorView,name="mentorView"),
     path('viewcommunitymentor/<int:id>',views.viewcommunitymentor,name="viewcommunitymentor")
-
 ]

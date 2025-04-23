@@ -1,0 +1,24 @@
+<html>
+    <body>
+            <table border="3" align="center">
+                <tr>
+                    <td>slno.</td>
+                    <td>Title</td>
+                    <td>Content</td>
+                    <td>Replay</td>
+                    <td>Date</td>
+                    <td>Action</td>
+                </tr>
+                {% for i in complaint %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.complaint_title}}</td>
+                    <td>{{i.complaint_content}}</td>
+                    <td>{{i.complaint_replay}}</td>
+                    <td>{{i.complaint_date}}</td>
+                    <td>Action</td>
+                </tr>
+                {% endfor %}
+            </table>
+    </body>
+</html>

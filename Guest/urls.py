@@ -9,4 +9,7 @@ urlpatterns = [
     path('',views.index, name='index'),
     path('userview/',views.userview,name='userview'),
     path('mentor/',views.req_mentor,name='m_reg'),
+    path('logout/',views.logout,name='logout'),
+    #path('join_lobby/', views.join_lobby, name='join_lobby'),
+    #path('explore_communities/', views.explore_communities, name='explore_communities'),
 ]

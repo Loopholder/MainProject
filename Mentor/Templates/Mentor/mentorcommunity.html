@@ -9,13 +9,13 @@
     <form method="POST">
         {% csrf_token %}
         <div >
-            {% for i in data %}
+            {% for i in dataCommunity %}
             <div>
                 <div>No. {{ forloop.counter }}</div>
-                <h2>{{ i.community_name }}</h2>
-                <p>{{ i.community_discription }}</p>
+                <h2>{{ i.community.community_name }}</h2>
+                <p>{{ i.community.community_discription }}</p>
                 <div>Created: {{ i.community_Date }}</div> <br>
-                <a href="{% url 'User:communitychatpage'  i.id %}">HOPE IN</a>
+                <a href="{% url 'Mentor:communitychatpage'  i.community.id %}">HOPE IN</a>
             </div>
             {% endfor %}
         </div>

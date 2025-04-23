@@ -36,4 +36,20 @@ urlpatterns=[
 
     path('paymentCodeText/',views.paymentCodeText,name='paymentCodeText'),
 
+    #findFriend
+
+    path('findFriend/',views.findFriend,name='findFriend'),
+    path('ajax_search_user/', views.ajax_search_user, name='ajax_search_user'),
+    
+    path('notification/', views.notification_list, name='notification'),
+    path('send_friend_request/', views.send_friend_request, name='send_friend_request'),
+    path('handle_notification/', views.handle_notification, name='handle_notification'),
+
+
+    path('dmchatpage/<int:id>',views.dmchatpage,name="dmchatpage"),
+    path('dmajaxchat/',views.dmajaxchat,name="dmajaxchat"),
+    path('dmajaxchatview/',views.dmajaxchatview,name="dmajaxchatview"),
+    # path('ajaxphoto/',views.ajaxphoto,name="ajaxphoto"),
+    path('dmclearchat/',views.dmclearchat,name="dmclearchat"),
+
 ]
